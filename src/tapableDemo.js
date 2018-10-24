@@ -69,13 +69,23 @@ inst.hooks.syncHook.tap("1B",num=>{console.log("1B",num) ; return ++num})
 inst.hooks.syncHook.tap("1C",num=>{console.log("1C",num) ; return ++num})
 
 
-inst.hooks.syncWaterfallHook.tap("2A",(num,sec)=>{console.log("2A",num,sec) ; return [++num, ++sec]})
-inst.hooks.syncWaterfallHook.tap("2B",(arr)=>{console.log("2B",arr) ; return {a:arr[0], b:arr[1]}})
-inst.hooks.syncWaterfallHook.tap("2C",(obj)=>{console.log("2C",obj) ; return obj})
+inst.hooks.syncWaterfallHook.tap("2A",(num,sec)=>{
+	console.log("2A",num,sec) ;
+	return [++num, ++sec]})
+inst.hooks.syncWaterfallHook.tap("2B",(arr)=>{
+	console.log("2B",arr) ;
+	return {a:arr[0], b:arr[1]}})
+inst.hooks.syncWaterfallHook.tap("2C",(obj)=>{
+	console.log("2C",obj) ;
+	obj.c="c";
+	return obj
+})
 
 
 inst.hooks.syncBailHook.tap("3A",num=>{console.log("3A",num) ;   })
-inst.hooks.syncBailHook.tap("3B",num=>{console.log("3B",num) ; return num})
+inst.hooks.syncBailHook.tap("3B",num=>{console.log("3B",num) ;
+		return {a:7}
+})
 inst.hooks.syncBailHook.tap("3C",num=>{console.log("3C",num) ;   })
 
 
@@ -112,6 +122,7 @@ inst.hooks.asyncParallelHook.tapAsync("5A",(num,cb)=>{
 	console.log("5A",num)
 	asyncF(++num ,2000).then((num)=>{
 		console.log("5A in",num) ;
+		// cb("hhhhh")  //YOU CAN TRY THROW AN ERROR
 		cb()
 	});
 })
@@ -142,13 +153,20 @@ function component() {
 	
 	var btns = [
 		["emit SyncHook",function(){
-		   inst.hooks.syncHook.call(1)
+			const result = inst.hooks.syncHook.call(1)
+			console.log("SyncHook",result)
 		}],
 		["emit SyncWaterfallHook",function(){
-		   inst.hooks.syncWaterfallHook.call(1,100)
+		   const result = inst.hooks.syncWaterfallHook.call(1,100)
+			console.log("SyncWaterfallHookr",result)
+		//	a: 2
+		// 	b: 101
+		//	c: c
 		}],
 		["emit SyncBailHook",function() {
-			  inst.hooks.syncBailHook.call(1)
+			const result =  inst.hooks.syncBailHook.call(1)
+			console.log("SyncBailHook",result)
+
 		}],
 		
 		["emit AsyncSeriesHook",function(){

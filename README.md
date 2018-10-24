@@ -1,6 +1,10 @@
 # webpack-dig-into-hook
+ - understand the [webpack  api PLUGIN chapter](https://webpack.js.org/api/)
+ - know how to read the source code of webpack
+ - know the plugin system
+ - know where to add your plugin for a given purpose
 
-# how the plugin is taped into the webpack build lifecycles
+## how and when the plugin is taped into the webpack build lifecycles
 
 please check file  "dig-into-webpack-hooks"
 
